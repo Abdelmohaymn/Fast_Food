@@ -6,7 +6,7 @@ I used mvvm design pattern, navigation component, room database to store
 favorite recipes and also store the primary result to increase the performance
 specially when there is no connection, kotlin coroutines, Rx java.
 
-the project is  not completed yet 
+!! the project is  not completed yet 
 
 here are some screenshots of the app
 
