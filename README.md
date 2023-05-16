@@ -1,2 +1,2 @@
 # Fast_Food!
-<img src="images.home.png">
+<img src="images/home.png">
