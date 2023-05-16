@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="item"
+            type="com.example.fastfood.model.similarRecipes.SimilarRecipesItem" />
+        <variable
+            name="listener"
+            type="com.example.fastfood.adapters.SimilarRecipeAdapter.ItemsInteraction" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_90sdp"
+        app:cardCornerRadius="@dimen/_10sdp"
+        android:elevation="@dimen/_3sdp"
+        app:cardUseCompatPadding="true">
+
+        <ImageView
+            android:onClick="@{() -> listener.onClickOnSimilarRecipeItem(item)}"
+            imageUrl="@{`https://spoonacular.com/recipeImages/`+item.id+`-556x370.`+item.imageType}"
+            android:id="@+id/popular_recipe_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
+    </androidx.cardview.widget.CardView>
+</layout>
