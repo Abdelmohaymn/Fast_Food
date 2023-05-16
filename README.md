@@ -1,2 +1,2 @@
 # Fast_Food!
-<img src="images/home.png" height="100">
+<img src="images/home.png" height="500">
