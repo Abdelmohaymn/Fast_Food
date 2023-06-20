@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.fastfood.R
 import com.example.fastfood.State
 import com.example.fastfood.adapters.BaseAdapter
 import com.example.fastfood.model.recipesList.ExtendedIngredient
@@ -81,29 +82,38 @@ fun text2Options(view:TextView, item: ExtendedIngredient, status:Boolean){
     view.text = s
 }
 
-@BindingAdapter(value=["showWhenLoading"])
-fun <T>showWhenLoading(view:View,state:State<T>?){
-    if(state is State.Loading){
+@BindingAdapter(value=["value","showWhenLoading"])
+fun <T>showWhenLoading(view:View,value:Boolean,state:State<T>?){
+    if(!value || state is State.Loading){
         view.visibility = View.VISIBLE
     }else{
         view.visibility = View.GONE
     }
 }
 
-@BindingAdapter(value=["showWhenSuccess"])
-fun <T>showWhenSuccess(view:View,state:State<T>?){
-    if(state is State.Success){
+@BindingAdapter(value=["value","showWhenSuccess"])
+fun <T>showWhenSuccess(view:View,value:Boolean,state:State<T>?){
+    if(!value || state is State.Success){
         view.visibility = View.VISIBLE
     }else{
         view.visibility = View.GONE
     }
 }
 
-@BindingAdapter(value=["showWhenError"])
-fun <T>showWhenError(view:View,state:State<T>?){
-    if(state is State.Error){
+@BindingAdapter(value=["value","showWhenError"])
+fun <T>showWhenError(view:View,value:Boolean,state:State<T>?){
+    if(value && state is State.Error){
         view.visibility = View.VISIBLE
     }else{
         view.visibility = View.GONE
+    }
+}
+
+@BindingAdapter(value = ["imageFav"])
+fun changeImageFav(view:ImageView,status: Boolean){
+    if(status){
+        view.setImageResource(R.drawable.ic_favorite)
+    }else{
+        view.setImageResource(R.drawable.ic_favorite_border)
     }
 }

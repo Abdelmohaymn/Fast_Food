@@ -77,4 +77,4 @@ data class Recipe(
     val veryPopular: Boolean? = null,
     @SerializedName("weightWatcherSmartPoints")
     val weightWatcherSmartPoints: Int? = null
-):Serializable
+)

@@ -2,6 +2,7 @@ package com.example.fastfood.model.similarRecipes
 
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class SimilarRecipesItem(
     @SerializedName("id")
@@ -16,4 +17,4 @@ data class SimilarRecipesItem(
     val sourceUrl: String? = null,
     @SerializedName("title")
     val title: String? = null
-)
+) : Serializable

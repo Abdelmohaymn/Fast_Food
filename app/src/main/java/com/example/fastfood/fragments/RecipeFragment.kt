@@ -6,28 +6,41 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.fastfood.R
 import com.example.fastfood.State
 import com.example.fastfood.adapters.*
 import com.example.fastfood.databinding.FragmentRecipeBinding
+import com.example.fastfood.domain.mapper.ToFavRecipeMapper
+import com.example.fastfood.domain.models.MyRecipe
 import com.example.fastfood.model.recipesList.AnalyzedInstruction
 import com.example.fastfood.model.recipesList.Equipment
 import com.example.fastfood.model.recipesList.ExtendedIngredient
 import com.example.fastfood.model.recipesList.Recipe
 import com.example.fastfood.model.similarRecipes.SimilarRecipesItem
+import com.example.fastfood.roomDb.FavRecipe
+import com.example.fastfood.roomDb.RecipeDatabase
 import com.example.fastfood.viewModel.RecipeViewModel
+import com.example.fastfood.viewModel.RecipeViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class RecipeFragment : Fragment(), SimilarRecipeAdapter.ItemsInteraction {
 
-    lateinit var binding: FragmentRecipeBinding
+    private lateinit var binding: FragmentRecipeBinding
     private val args:RecipeFragmentArgs by navArgs()
-    private val viewModel:RecipeViewModel by viewModels()
+    private val viewModel:RecipeViewModel by viewModels{RecipeViewModelFactory(requireContext())}
+    private var currentRecipe:MyRecipe? = null
+    val isSaved = MutableLiveData(false)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,16 +49,14 @@ class RecipeFragment : Fragment(), SimilarRecipeAdapter.ItemsInteraction {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_recipe,container,false)
         binding.lifecycleOwner=this
         binding.viewModel=viewModel
+        binding.fragment=this
 
-        if(args.recipe!=null){
-            initData(args.recipe!!)
-        }else if(args.recipeId!=-1){
-            viewModel.getRecipeInfo(args.recipeId)
-            viewModel.recipeInfo.observe(viewLifecycleOwner){state->
-                if (state is State.Success){
-                    initData(state.toData()!!)
-                }
-            }
+        ////////////////////////////
+
+        init()
+
+        binding.floatingFavButton.setOnClickListener {
+            floatingButton()
         }
 
         binding.backBtn.setOnClickListener {
@@ -55,7 +66,30 @@ class RecipeFragment : Fragment(), SimilarRecipeAdapter.ItemsInteraction {
         return binding.root
     }
 
-    private fun initData(recipe: Recipe){
+    private fun init(){
+        if(args.recipe!=null){
+            currentRecipe = args.recipe!!
+            if(viewModel.getRecipeById(currentRecipe?.id!!)!=null)isSaved.postValue(true)
+            initData(currentRecipe!!)
+        }else if(args.miniRecipe!=null){
+            viewModel.getRecipeInfo(args.miniRecipe!!.id!!)
+            binding.miniRecipe = args.miniRecipe
+            currentRecipe = viewModel.getRecipeById(args.miniRecipe?.id!!)
+            if(currentRecipe!=null){
+                isSaved.postValue(true)
+                initData(currentRecipe!!)
+            }else{
+                viewModel.recipeInfo.observe(viewLifecycleOwner){state->
+                    if (state is State.Success){
+                        currentRecipe = state.toData()!!
+                        initData(currentRecipe!!)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initData(recipe: MyRecipe){
         viewModel.getSimilarRecipes(recipe.id!!)
         binding.recipe = recipe
         val ingredientAdapter = IngredientAdapter((recipe.extendedIngredients?:emptyList()) as List<ExtendedIngredient>)
@@ -84,8 +118,19 @@ class RecipeFragment : Fragment(), SimilarRecipeAdapter.ItemsInteraction {
         return Pair(equipments.toList(),steps)
     }
 
+    private fun floatingButton(){
+        if(currentRecipe!=null){
+            if(!isSaved.value!!){
+                viewModel.insertFavRecipe(currentRecipe!!)
+            }else{
+                viewModel.deleteFavRecipe(currentRecipe!!)
+            }
+            isSaved.postValue(!isSaved.value!!)
+        }
+    }
+
     override fun onClickOnSimilarRecipeItem(item: SimilarRecipesItem) {
-        val action = RecipeFragmentDirections.actionRecipeFragmentSelf(null,item.id!!)
+        val action = RecipeFragmentDirections.actionRecipeFragmentSelf(null,item)
         findNavController().navigate(action)
     }
 

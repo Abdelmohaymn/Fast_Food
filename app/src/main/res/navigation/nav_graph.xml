@@ -24,7 +24,11 @@
         android:id="@+id/favoritesFragment"
         android:name="com.example.fastfood.fragments.FavoritesFragment"
         android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/categoriesFragment"
         android:name="com.example.fastfood.fragments.CategoriesFragment"
@@ -42,13 +46,15 @@
             app:popUpToInclusive="false" />
         <argument
             android:name="recipe"
-            app:argType="com.example.fastfood.model.recipesList.Recipe"
+            app:argType="com.example.fastfood.domain.models.MyRecipe"
             app:nullable="true"
             android:defaultValue="@null" />
         <argument
-            android:name="recipeId"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:name="miniRecipe"
+            app:argType="com.example.fastfood.model.similarRecipes.SimilarRecipesItem"
+            app:nullable="true"
+            android:defaultValue="@null" />
+
     </fragment>
     <fragment
         android:id="@+id/categoryRecipeFragment"

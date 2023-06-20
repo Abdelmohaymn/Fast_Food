@@ -6,16 +6,24 @@
     <data>
         <variable
             name="recipe"
-            type="com.example.fastfood.model.recipesList.Recipe"
+            type="com.example.fastfood.domain.models.MyRecipe"
+            />
+        <variable
+            name="miniRecipe"
+            type="com.example.fastfood.model.similarRecipes.SimilarRecipesItem"
             />
         <variable
             name="viewModel"
             type="com.example.fastfood.viewModel.RecipeViewModel" />
+        <variable
+            name="fragment"
+            type="com.example.fastfood.fragments.RecipeFragment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".fragments.RecipeFragment">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -31,10 +39,10 @@
                 app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
                 app:collapsedTitleTextColor="@color/white"
                 app:expandedTitleTextColor="@color/white"
-                app:title="@{recipe.title}">
+                app:title="@{recipe != null ? recipe.title : miniRecipe.title}">
 
                 <ImageView
-                    app:imageUrl="@{recipe.image}"
+                    app:imageUrl="@{recipe != null ? recipe.image :`https://spoonacular.com/recipeImages/`+miniRecipe.id+`-556x370.`+miniRecipe.imageType}"
                     android:id="@+id/img_recipe_detail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -62,10 +70,10 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            imageFav="@{fragment.isSaved}"
             android:id="@+id/floating_fav_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_favorite_border"
             app:tint="@color/white"
             app:backgroundTint="@color/accent"
             app:layout_anchor="@id/app_bar"
@@ -73,11 +81,14 @@
             android:layout_marginEnd="@dimen/_10sdp" />
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                value="@{recipe==null}"
+                showWhenSuccess="@{viewModel.recipeInfo}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -225,6 +236,8 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_title_Instructions" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    value="@{true}"
+                    showWhenSuccess="@{viewModel.similarRecipes}"
                     android:id="@+id/last_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -267,13 +280,25 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <!--<com.google.android.material.progressindicator.LinearProgressIndicator
+        <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/progress_bar_linear"
+            value="@{true}"
+            showWhenLoading="@{recipe == null ? viewModel.recipeInfo : viewModel.similarRecipes}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom"
-            android:indeterminate="true"/>-->
+            android:indeterminate="true"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_anchor="@id/scroll_view"
+            app:layout_anchorGravity="center"
+            showWhenError="@{viewModel.recipeInfo}"
+            value="@{recipe==null}"
+            app:lottie_rawRes="@raw/no_internet"
+            app:lottie_autoPlay="true"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

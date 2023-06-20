@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.fastfood.R
 import com.example.fastfood.adapters.CategoryRecipeAdapter
 import com.example.fastfood.databinding.FragmentCategoryRecipeBinding
+import com.example.fastfood.domain.models.MyRecipe
 import com.example.fastfood.model.recipesList.Recipe
 import com.example.fastfood.viewModel.CategoryRecipeViewModel
 
@@ -32,14 +33,13 @@ class CategoryRecipeFragment : Fragment(), CategoryRecipeAdapter.ItemsInteractio
 
         binding.categoryType = args.categoryType
         viewModel.getRecipes(args.categoryType)
-        //binding.recyclerCategoryRecipes.addItemDecoration(GridSpacingItemDecoration(requireActivity(), 2, 150))
         val adapter = CategoryRecipeAdapter(emptyList(),this)
         binding.recyclerCategoryRecipes.adapter=adapter
 
         return binding.root
     }
 
-    override fun onClickOnCategoryRecipeItem(item: Recipe) {
+    override fun onClickOnCategoryRecipeItem(item: MyRecipe) {
         val action = CategoryRecipeFragmentDirections.actionCategoryRecipeFragmentToRecipeFragment(item)
         findNavController().navigate(action)
     }

@@ -86,8 +86,8 @@
                     app:cardUseCompatPadding="true">
 
                     <ImageView
-                        imageUrl="@{viewModel.randomRecipee.toData().recipes[0].image}"
-                        android:onClick="@{() -> fragment.moveToRecipeFragment(viewModel.randomRecipee.toData().recipes[0])}"
+                        imageUrl="@{viewModel.randomRecipee.toData()[0].image}"
+                        android:onClick="@{() -> fragment.moveToRecipeFragment(viewModel.randomRecipee.toData()[0])}"
                         android:id="@+id/img_random_meal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -109,7 +109,7 @@
                     app:layout_constraintTop_toBottomOf="@id/card_random_meal" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    adapterList="@{viewModel.popularRecipes.toData().recipes}"
+                    adapterList="@{viewModel.popularRecipes.toData()}"
                     android:id="@+id/recycler_popular_items"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_90sdp"

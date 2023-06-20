@@ -13,6 +13,7 @@ import com.example.fastfood.R
 import com.example.fastfood.adapters.CategoryAdapter
 import com.example.fastfood.adapters.PopularAdapter
 import com.example.fastfood.databinding.FragmentHomeBinding
+import com.example.fastfood.domain.models.MyRecipe
 import com.example.fastfood.model.recipesList.Recipe
 import com.example.fastfood.util.mealTypes
 import com.example.fastfood.viewModel.HomeViewModel
@@ -43,12 +44,12 @@ class HomeFragment : Fragment(), PopularAdapter.ItemsInteraction, CategoryAdapte
         return binding.root
     }
 
-    fun moveToRecipeFragment(recipe: Recipe){
+    fun moveToRecipeFragment(recipe: MyRecipe){
         val action = HomeFragmentDirections.actionHomeFragmentToRecipeFragment(recipe)
         findNavController().navigate(action)
     }
 
-    override fun onClickOnPopularItem(item: Recipe) {
+    override fun onClickOnPopularItem(item: MyRecipe) {
         moveToRecipeFragment(item)
     }
 
