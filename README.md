@@ -8,7 +8,7 @@ specially when there is no connection, kotlin coroutines, Rx java.
 
 here are some screenshots of the app
 
-[!click here to see a video for the app](https://www.linkedin.com/posts/abdelmohaymn-elbeshier-4146b0235_coding-project-android-activity-7079541242371448832-cOx5?utm_source=share&utm_medium=member_desktop)
+[click here to see a video for the app](https://www.linkedin.com/posts/abdelmohaymn-elbeshier-4146b0235_coding-project-android-activity-7079541242371448832-cOx5?utm_source=share&utm_medium=member_desktop)
 
 <img src="images/fast_food_1.jpg">
 <img src="images/fast_food_2.jpg" >
