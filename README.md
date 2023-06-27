@@ -10,3 +10,4 @@ specially when there is no connection, kotlin coroutines, Rx java.
 
 here are some screenshots of the app
 
+<img src="images/fast_food_1.JPG" height="500">
