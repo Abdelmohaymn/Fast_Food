@@ -9,6 +9,8 @@ class PopularAdapter(items:List<MyRecipe>, myListener:ItemsInteraction):BaseAdap
 
     interface ItemsInteraction : BaseItemsInteraction{
         fun onClickOnPopularItem(item: MyRecipe)
+
+        fun onLongClickOnPopularItem(item: MyRecipe):Boolean
     }
 
 }

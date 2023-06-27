@@ -13,15 +13,15 @@ import com.example.fastfood.R
 import com.example.fastfood.adapters.CategoryRecipeAdapter
 import com.example.fastfood.databinding.FragmentCategoryRecipeBinding
 import com.example.fastfood.domain.models.MyRecipe
-import com.example.fastfood.model.recipesList.Recipe
-import com.example.fastfood.viewModel.CategoryRecipeViewModel
+import com.example.fastfood.viewModel.factories.CategoryRecipeFactory
+import com.example.fastfood.viewModel.viewsm.CategoryRecipeViewModel
 
 
 class CategoryRecipeFragment : Fragment(), CategoryRecipeAdapter.ItemsInteraction {
 
     private lateinit var binding:FragmentCategoryRecipeBinding
-    private val viewModel: CategoryRecipeViewModel by viewModels()
     private val args:CategoryRecipeFragmentArgs by navArgs()
+    private val viewModel: CategoryRecipeViewModel by viewModels{ CategoryRecipeFactory(args.categoryType) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,9 +30,8 @@ class CategoryRecipeFragment : Fragment(), CategoryRecipeAdapter.ItemsInteractio
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_category_recipe,container,false)
         binding.lifecycleOwner=this
         binding.viewModel=viewModel
-
         binding.categoryType = args.categoryType
-        viewModel.getRecipes(args.categoryType)
+
         val adapter = CategoryRecipeAdapter(emptyList(),this)
         binding.recyclerCategoryRecipes.adapter=adapter
 

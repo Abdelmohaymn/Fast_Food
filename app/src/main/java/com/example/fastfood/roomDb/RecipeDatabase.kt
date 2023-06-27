@@ -5,7 +5,7 @@ import androidx.room.*
 import com.example.fastfood.roomDb.parser.Converters
 import com.example.fastfood.util.DATABASE_NAME
 
-@Database(entities = [FavRecipe::class], version = 1, exportSchema = false)
+@Database(entities = [FavRecipe::class,StoredRecipe::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class RecipeDatabase:RoomDatabase() {
     abstract fun getRecipeDao():RecipeDao

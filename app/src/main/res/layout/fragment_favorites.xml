@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.fastfood.viewModel.FavoritesViewModel" />
+            type="com.example.fastfood.viewModel.viewsm.FavoritesViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,6 +25,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lotti_fav"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_120sdp"
+            showIfEmpty="@{viewModel.favs}"
+            app:lottie_rawRes="@raw/empty"
+            app:lottie_autoPlay="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            showIfEmpty="@{viewModel.favs}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your favorite list is empty"
+            android:textSize="@dimen/_15ssp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lotti_fav"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

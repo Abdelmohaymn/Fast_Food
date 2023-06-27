@@ -32,23 +32,14 @@ class MainActivity : AppCompatActivity(),NavController.OnDestinationChangedListe
 
     override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
         when(destination.id){
-            R.id.homeFragment,R.id.favoritesFragment,R.id.categoriesFragment
+            R.id.homeFragment,R.id.favoritesFragment
                  -> bottomNav.visibility = View.VISIBLE
             else -> bottomNav.visibility = View.GONE
         }
     }
 
     override fun onBackPressed() {
-        /*if (navController.currentDestination?.id == R.id.recipeFragment) {
-            val sourceFragmentId = (navHostFragment.childFragmentManager
-                .primaryNavigationFragment as? RecipeFragment)?.args?.sourceId
-
-            if (sourceFragmentId != null) {
-                navController.navigateUp()
-                return
-            }
-        }*/
-        if(navController.currentDestination?.id==R.id.homeFragment)super.onBackPressed()
+        if(navController.currentDestination?.id==R.id.homeFragment)finishAffinity()
         navController.navigateUp()
     }
 

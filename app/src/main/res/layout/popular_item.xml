@@ -19,11 +19,23 @@
         app:cardUseCompatPadding="true">
 
         <ImageView
+            android:onLongClick="@{() -> listener.onLongClickOnPopularItem(item)}"
             android:onClick="@{() -> listener.onClickOnPopularItem(item)}"
             imageUrl="@{item.image}"
+            lotti="@{lottieImageHome}"
             android:id="@+id/popular_recipe_item"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lottieImageHome"
+            app:lottie_rawRes="@raw/loading"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            android:layout_gravity="center"/>
+
     </androidx.cardview.widget.CardView>
 </layout>

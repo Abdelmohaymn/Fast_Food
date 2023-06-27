@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.fastfood.viewModel.CategoryRecipeViewModel" />
+            type="com.example.fastfood.viewModel.viewsm.CategoryRecipeViewModel" />
         <variable
             name="categoryType"
             type="String" />
@@ -59,8 +59,9 @@
 
 
         <com.airbnb.lottie.LottieAnimationView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/lotti_category"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
             showWhenError="@{viewModel.recipes}"
             value="@{true}"
             app:lottie_rawRes="@raw/no_internet"
@@ -69,6 +70,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            showWhenError="@{viewModel.recipes}"
+            value="@{true}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Check your connection"
+            android:textSize="@dimen/_15ssp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lotti_category"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

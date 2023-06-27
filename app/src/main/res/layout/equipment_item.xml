@@ -14,6 +14,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            lotti="@{lottieImageHome}"
             imageUrl="@{`https://spoonacular.com/cdn/equipment_100x100/` + item.image}"
             android:id="@+id/image_equipment"
             android:layout_width="match_parent"
@@ -21,7 +22,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/_5sdp"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:id="@+id/lottieImageHome"
+            app:lottie_rawRes="@raw/loading"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,6 +45,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:textSize="@dimen/_12ssp"
             android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/image_equipment" />

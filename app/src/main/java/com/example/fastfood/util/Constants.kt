@@ -5,34 +5,35 @@ import com.example.fastfood.State
 import com.example.fastfood.domain.mapper.BaseMapper
 import com.example.fastfood.domain.mapper.RecipeMapper
 import com.example.fastfood.domain.models.MyRecipe
+import com.example.fastfood.model.complexSearch.ComplexSearchResponse
 import com.example.fastfood.model.recipesList.Recipe
 import com.example.fastfood.model.recipesList.RecipeList
+import com.example.fastfood.model.similarRecipes.SimilarRecipes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 
 
-const val SPOON_API_KEY = "fd7648ceaced4e07870585f48bd9a439"//"86a894c3695b486c9024f0fa969a802c"
+const val SPOON_API_KEY = "86a894c3695b486c9024f0fa969a802c"//"fd7648ceaced4e07870585f48bd9a439"
 const val DATABASE_NAME = "recipe_database"
 
 val mealTypes = listOf(
-    "main course","bread","marinade","side dish","breakfast","fingerfood",
-    "dessert","soup","snack","appetizer","beverage","drink","salad","sauce")
-
-val colors = listOf<Int>(
-    R.color.yellow,
-    R.color.pink,
-    R.color.teal_200,
-    R.color.blue,
-    R.color.pink2,
-    R.color.purple_200,
-    R.color.orange,
-    R.color.green
+    Pair("main course",R.drawable.main_course),
+    Pair("bread",R.drawable.bread),
+    Pair("marinade",R.drawable.marinade),
+    Pair("side dish",R.drawable.side_dish),
+    Pair("breakfast",R.drawable.breakfast),
+    Pair("fingerfood",R.drawable.fingerfood),
+    Pair("dessert",R.drawable.dessert),
+    Pair("soup",R.drawable.soup),
+    Pair("snack",R.drawable.snack),
+    Pair("appetizer",R.drawable.appetizer),
+    Pair("beverage",R.drawable.beverage),
+    Pair("drink",R.drawable.drink),
+    Pair("salad",R.drawable.salad),
+    Pair("sauce",R.drawable.sauce)
 )
 
-fun specificColor():Int{
-    return colors.randomOrNull()!!
-}
 
 fun<T> wrapWithFlow(function:suspend ()-> Response<T>): Flow<State<T>> {
     return flow {
@@ -65,6 +66,18 @@ fun<I,O,T,R> flowWithMaping(mapper: BaseMapper<I,O>,function: suspend () -> Resp
                 }
                 is Recipe -> {
                     data = response.let { mapper.map(it as I) } as R
+                }
+
+                is SimilarRecipes -> {
+                    data = response.map { dto->
+                        dto?.let{mapper.map(it as I)}
+                    } as R
+                }
+
+                is ComplexSearchResponse -> {
+                    data = response.results?.map { dto->
+                        dto?.let{mapper.map(it as I)}
+                    }as R
                 }
             }
             emit(State.Success(data))

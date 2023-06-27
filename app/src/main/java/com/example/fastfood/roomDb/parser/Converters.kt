@@ -3,6 +3,7 @@ package com.example.fastfood.roomDb.parser
 import androidx.room.TypeConverter
 import com.example.fastfood.model.recipesList.AnalyzedInstruction
 import com.example.fastfood.model.recipesList.ExtendedIngredient
+import com.example.fastfood.roomDb.RecipeEntity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.*
@@ -58,4 +59,5 @@ class Converters {
     fun fromDate(date: Date?): Long? {
         return date?.time
     }
+
 }

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.fastfood.viewModel.HomeViewModel" />
+            type="com.example.fastfood.viewModel.viewsm.HomeViewModel" />
         <variable
             name="fragment"
             type="com.example.fastfood.fragments.HomeFragment" />
@@ -17,7 +17,46 @@
         android:layout_height="match_parent"
         tools:context=".fragments.HomeFragment">
 
+
+        <ProgressBar
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            showWhenLoading="@{viewModel.randomRecipee}"
+            value="@{true}"
+            android:indeterminateTint="@color/accent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lotti_home"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            showWhenError="@{viewModel.randomRecipee}"
+            value="@{true}"
+            app:lottie_rawRes="@raw/no_internet"
+            app:lottie_autoPlay="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            showWhenError="@{viewModel.randomRecipee}"
+            value="@{true}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Check your connection"
+            android:textSize="@dimen/_15ssp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lotti_home"/>
+
         <androidx.core.widget.NestedScrollView
+            showWhenSuccess="@{viewModel.randomRecipee}"
+            value="@{true}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true">
@@ -37,7 +76,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
-                    android:layout_marginStart="@dimen/_30sdp">
+                    android:layout_marginStart="@dimen/_10sdp">
 
                     <TextView
                         android:id="@+id/tv_home"
@@ -76,8 +115,8 @@
                     android:id="@+id/card_random_meal"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_160sdp"
-                    android:layout_marginStart="@dimen/_25sdp"
-                    android:layout_marginEnd="@dimen/_25sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -85,14 +124,25 @@
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardUseCompatPadding="true">
 
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lottieImageHome"
+                        app:lottie_rawRes="@raw/loading"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        android:layout_gravity="center"/>
+
+
                     <ImageView
-                        imageUrl="@{viewModel.randomRecipee.toData()[0].image}"
-                        android:onClick="@{() -> fragment.moveToRecipeFragment(viewModel.randomRecipee.toData()[0])}"
+                        imageUrl="@{viewModel.randomRecipee.toData().image}"
+                        lotti="@{lottieImageHome}"
+                        android:onClick="@{() -> fragment.moveToRecipeFragment(viewModel.randomRecipee.toData())}"
                         android:id="@+id/img_random_meal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/accent"
                         android:scaleType="centerCrop"/>
+
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -101,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_18sdp"
                     android:fontFamily="@font/myfont"
-                    android:text="Over popular items"
+                    android:text="Popular items"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_17ssp"
                     android:textStyle="bold"
@@ -109,11 +159,11 @@
                     app:layout_constraintTop_toBottomOf="@id/card_random_meal" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    adapterList="@{viewModel.popularRecipes.toData()}"
+                    adapterList="@{viewModel.popularRecipes}"
                     android:id="@+id/recycler_popular_items"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_90sdp"
-                    android:layout_marginStart="@dimen/_25sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:orientation="horizontal"
                     android:layout_marginEnd="@dimen/_10sdp"
@@ -136,8 +186,8 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_25sdp"
-                    android:layout_marginEnd="@dimen/_25sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_categories"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -147,8 +197,8 @@
                         android:id="@+id/recycler_categories"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        android:orientation="vertical"
                         app:spanCount="3"
                         android:scrollbars="none" />
                 </androidx.cardview.widget.CardView>

@@ -2,15 +2,12 @@ package com.example.fastfood.fragments
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -18,29 +15,24 @@ import com.example.fastfood.R
 import com.example.fastfood.State
 import com.example.fastfood.adapters.*
 import com.example.fastfood.databinding.FragmentRecipeBinding
-import com.example.fastfood.domain.mapper.ToFavRecipeMapper
+import com.example.fastfood.domain.models.MyMiniRecipe
 import com.example.fastfood.domain.models.MyRecipe
 import com.example.fastfood.model.recipesList.AnalyzedInstruction
 import com.example.fastfood.model.recipesList.Equipment
 import com.example.fastfood.model.recipesList.ExtendedIngredient
-import com.example.fastfood.model.recipesList.Recipe
 import com.example.fastfood.model.similarRecipes.SimilarRecipesItem
-import com.example.fastfood.roomDb.FavRecipe
-import com.example.fastfood.roomDb.RecipeDatabase
-import com.example.fastfood.viewModel.RecipeViewModel
-import com.example.fastfood.viewModel.RecipeViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.fastfood.viewModel.viewsm.RecipeViewModel
+import com.example.fastfood.viewModel.factories.RecipeViewModelFactory
 
 
 class RecipeFragment : Fragment(), SimilarRecipeAdapter.ItemsInteraction {
 
     private lateinit var binding: FragmentRecipeBinding
     private val args:RecipeFragmentArgs by navArgs()
-    private val viewModel:RecipeViewModel by viewModels{RecipeViewModelFactory(requireContext())}
+    private val viewModel: RecipeViewModel by viewModels{ RecipeViewModelFactory(requireContext()) }
     private var currentRecipe:MyRecipe? = null
     val isSaved = MutableLiveData(false)
+    val isChecked = MutableLiveData(false)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,6 +63,7 @@ class RecipeFragment : Fragment(), SimilarRecipeAdapter.ItemsInteraction {
             currentRecipe = args.recipe!!
             if(viewModel.getRecipeById(currentRecipe?.id!!)!=null)isSaved.postValue(true)
             initData(currentRecipe!!)
+            //Log.d("imageCat",currentRecipe!!.image!!)
         }else if(args.miniRecipe!=null){
             viewModel.getRecipeInfo(args.miniRecipe!!.id!!)
             binding.miniRecipe = args.miniRecipe
@@ -92,7 +85,7 @@ class RecipeFragment : Fragment(), SimilarRecipeAdapter.ItemsInteraction {
     private fun initData(recipe: MyRecipe){
         viewModel.getSimilarRecipes(recipe.id!!)
         binding.recipe = recipe
-        val ingredientAdapter = IngredientAdapter((recipe.extendedIngredients?:emptyList()) as List<ExtendedIngredient>)
+        val ingredientAdapter = IngredientAdapter((recipe.extendedIngredients?:emptyList())as List<ExtendedIngredient>)
         binding.recyclerIngredients.adapter=ingredientAdapter
         val pairOfData = getEquipments(recipe.analyzedInstructions as List<AnalyzedInstruction>?)
         val equipmentAdapter = EquipmentAdapter(pairOfData.first)
@@ -129,7 +122,7 @@ class RecipeFragment : Fragment(), SimilarRecipeAdapter.ItemsInteraction {
         }
     }
 
-    override fun onClickOnSimilarRecipeItem(item: SimilarRecipesItem) {
+    override fun onClickOnSimilarRecipeItem(item: MyMiniRecipe) {
         val action = RecipeFragmentDirections.actionRecipeFragmentSelf(null,item)
         findNavController().navigate(action)
     }

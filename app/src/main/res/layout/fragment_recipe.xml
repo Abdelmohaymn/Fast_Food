@@ -10,11 +10,11 @@
             />
         <variable
             name="miniRecipe"
-            type="com.example.fastfood.model.similarRecipes.SimilarRecipesItem"
+            type="com.example.fastfood.domain.models.MyMiniRecipe"
             />
         <variable
             name="viewModel"
-            type="com.example.fastfood.viewModel.RecipeViewModel" />
+            type="com.example.fastfood.viewModel.viewsm.RecipeViewModel" />
         <variable
             name="fragment"
             type="com.example.fastfood.fragments.RecipeFragment" />
@@ -42,7 +42,7 @@
                 app:title="@{recipe != null ? recipe.title : miniRecipe.title}">
 
                 <ImageView
-                    app:imageUrl="@{recipe != null ? recipe.image :`https://spoonacular.com/recipeImages/`+miniRecipe.id+`-556x370.`+miniRecipe.imageType}"
+                    app:imageUrl="@{recipe != null ? recipe.image : miniRecipe.image}"
                     android:id="@+id/img_recipe_detail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -170,6 +170,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/text_summary" />
 
+                <!--<com.github.angads25.toggle.widget.LabeledSwitch
+                    android:id="@+id/switch_recipe"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_title_ingredients"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    app:textOff="metric "
+                    app:textOn="us"
+                    app:on="false"
+                    app:colorOn="@color/accent"
+                    app:colorBorder="@color/accent"/>-->
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_ingredients"
                     android:layout_width="wrap_content"
@@ -291,8 +305,8 @@
             android:indeterminate="true"/>
 
         <com.airbnb.lottie.LottieAnimationView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
             app:layout_anchor="@id/scroll_view"
             app:layout_anchorGravity="center"
             showWhenError="@{viewModel.recipeInfo}"

@@ -1,5 +1,7 @@
 package com.example.fastfood.network
 
+import com.example.fastfood.model.autoComplete.AutoCompleteResponse
+import com.example.fastfood.model.complexSearch.ComplexSearchResponse
 import com.example.fastfood.model.recipesList.Recipe
 import com.example.fastfood.model.recipesList.RecipeList
 import com.example.fastfood.model.similarRecipes.SimilarRecipes
@@ -31,4 +33,19 @@ interface RecipeApi {
         @Path("id") id:Int,
         @Query("apiKey") apiKey:String = SPOON_API_KEY,
     ):Response<Recipe>
+
+    @GET("recipes/autocomplete")
+    suspend fun getAutoCompleteSearch(
+        @Query("query") query:String,
+        @Query("number") number:Int=10,
+        @Query("apiKey") apiKey:String = SPOON_API_KEY,
+    ):Response<AutoCompleteResponse>
+
+    @GET("recipes/complexSearch")
+    suspend fun getRecipesFromSearch(
+        @Query("query") query:String,
+        @Query("number") number:Int=50,
+        @Query("apiKey") apiKey:String = SPOON_API_KEY,
+    ):Response<ComplexSearchResponse>
+
 }

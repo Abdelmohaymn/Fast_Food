@@ -85,6 +85,11 @@ dependencies {
 
     /////gson
     implementation 'com.google.code.gson:gson:2.10.1'
+    //// switch button
+    implementation 'com.github.angads25:toggle:1.1.0'
+    //rxJava
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
 
 
 }

@@ -10,10 +10,5 @@
         android:id="@+id/favoritesFragment"
         android:icon="@drawable/ic_favorite"
         />
-    <item
-        android:title="Categories"
-        android:id="@+id/categoriesFragment"
-        android:icon="@drawable/ic_category"
-        />
 
 </menu>

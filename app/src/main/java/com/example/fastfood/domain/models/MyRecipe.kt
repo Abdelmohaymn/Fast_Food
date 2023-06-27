@@ -1,12 +1,10 @@
 package com.example.fastfood.domain.models
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+
 import com.example.fastfood.model.recipesList.AnalyzedInstruction
 import com.example.fastfood.model.recipesList.ExtendedIngredient
 import java.io.Serializable
 
-@Entity(tableName = "fav_recipes")
 data class MyRecipe(
     val analyzedInstructions: List<AnalyzedInstruction?>? = null,
     val cuisines: List<String?>? = null,

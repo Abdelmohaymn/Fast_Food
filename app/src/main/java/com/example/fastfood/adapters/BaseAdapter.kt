@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fastfood.BR
+import com.example.fastfood.util.RecipeDiffUtil
 
 abstract class BaseAdapter<T>(private var items:List<T>,private val myListener:BaseItemsInteraction?)
     : RecyclerView.Adapter<BaseAdapter.BaseViewHolder>(){
@@ -36,8 +38,10 @@ abstract class BaseAdapter<T>(private var items:List<T>,private val myListener:B
     override fun getItemCount()=items.size
 
     fun setList(list:List<T>){
+        val diffUtil = RecipeDiffUtil(items,list)
+        val diffResult = DiffUtil.calculateDiff(diffUtil)
         items=list
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun getList() = items

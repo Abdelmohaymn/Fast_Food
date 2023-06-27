@@ -1,14 +1,21 @@
 package com.example.fastfood.util
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
 import android.text.Html
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.fastfood.R
 import com.example.fastfood.State
 import com.example.fastfood.adapters.BaseAdapter
@@ -23,6 +30,45 @@ fun loadImage(view: ImageView, imageUrl: String?) {
             .load(imageUrl)
             .into(view)
     }
+}
+
+@BindingAdapter(value=["imageUrl","lotti"])
+fun loadImagee(view: ImageView, imageUrl: String?,lotti: LottieAnimationView) {
+
+    lotti.visibility = View.VISIBLE
+    lotti.setAnimation("loading.json")
+    view.isEnabled=false
+
+    Glide.with(view.context)
+        .load(imageUrl)
+        .listener(object : RequestListener<Drawable>{
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<Drawable>?,
+                isFirstResource: Boolean
+            ): Boolean {
+                lotti.setAnimation("failed.json")
+                lotti.loop(false)
+                lotti.playAnimation()
+                return false
+            }
+
+            override fun onResourceReady(
+                resource: Drawable?,
+                model: Any?,
+                target: Target<Drawable>?,
+                dataSource: DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
+                lotti.cancelAnimation()
+                lotti.visibility = View.GONE
+                view.isEnabled=true
+                return false
+            }
+        })
+        .into(view)
+
 }
 
 @SuppressLint("NewApi")
@@ -63,12 +109,12 @@ fun<T> setAdapterList(view: RecyclerView, items:List<T>?){
         (view.adapter as BaseAdapter<T>?)?.setList(emptyList())
     }
 }
-
-@SuppressLint("NewApi")
+//////
+/*@SuppressLint("NewApi")
 @BindingAdapter("cardViewBackground")
 fun changeBackground(view: CardView, x:Boolean){
     view.setCardBackgroundColor(view.resources.getColor(specificColor(),null));
-}
+}*/
 
 @BindingAdapter(value = ["textOptions","status"])
 fun text2Options(view:TextView, item: ExtendedIngredient, status:Boolean){
@@ -84,20 +130,12 @@ fun text2Options(view:TextView, item: ExtendedIngredient, status:Boolean){
 
 @BindingAdapter(value=["value","showWhenLoading"])
 fun <T>showWhenLoading(view:View,value:Boolean,state:State<T>?){
-    if(!value || state is State.Loading){
-        view.visibility = View.VISIBLE
-    }else{
-        view.visibility = View.GONE
-    }
+    checkForVisibility(view,(!value || state is State.Loading))
 }
 
 @BindingAdapter(value=["value","showWhenSuccess"])
 fun <T>showWhenSuccess(view:View,value:Boolean,state:State<T>?){
-    if(!value || state is State.Success){
-        view.visibility = View.VISIBLE
-    }else{
-        view.visibility = View.GONE
-    }
+    checkForVisibility(view,(!value || state is State.Success))
 }
 
 @BindingAdapter(value=["value","showWhenError"])
@@ -115,5 +153,23 @@ fun changeImageFav(view:ImageView,status: Boolean){
         view.setImageResource(R.drawable.ic_favorite)
     }else{
         view.setImageResource(R.drawable.ic_favorite_border)
+    }
+}
+
+@BindingAdapter(value = ["showIfEmpty"])
+fun <T> showIfEmpty(view:View,items:List<T>?){
+    checkForVisibility(view,items.isNullOrEmpty())
+}
+
+@BindingAdapter("android:src")
+fun putImageResourc(imageView: ImageView,res:Int){
+    imageView.setImageResource(res)
+}
+
+fun checkForVisibility(view:View,status:Boolean){
+    if(status){
+        view.visibility = View.VISIBLE
+    }else{
+        view.visibility = View.GONE
     }
 }

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="item"
-            type="com.example.fastfood.model.similarRecipes.SimilarRecipesItem" />
+            type="com.example.fastfood.domain.models.MyMiniRecipe" />
         <variable
             name="listener"
             type="com.example.fastfood.adapters.SimilarRecipeAdapter.ItemsInteraction" />
@@ -19,11 +19,22 @@
         app:cardUseCompatPadding="true">
 
         <ImageView
+            lotti="@{lottieImageHome}"
             android:onClick="@{() -> listener.onClickOnSimilarRecipeItem(item)}"
-            imageUrl="@{`https://spoonacular.com/recipeImages/`+item.id+`-556x370.`+item.imageType}"
+            imageUrl="@{item.image}"
             android:id="@+id/popular_recipe_item"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lottieImageHome"
+            app:lottie_rawRes="@raw/loading"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            android:layout_gravity="center"/>
+
     </androidx.cardview.widget.CardView>
 </layout>
