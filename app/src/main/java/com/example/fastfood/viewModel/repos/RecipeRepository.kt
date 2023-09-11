@@ -8,6 +8,7 @@ import com.example.fastfood.domain.mapper.ToFavRecipeMapper
 import com.example.fastfood.domain.models.MyMiniRecipe
 import com.example.fastfood.domain.models.MyRecipe
 import com.example.fastfood.model.similarRecipes.SimilarRecipes
+import com.example.fastfood.network.RecipeApi
 import com.example.fastfood.network.RetrofitInstance
 import com.example.fastfood.roomDb.RecipeDao
 import com.example.fastfood.util.flowWithMaping
@@ -15,26 +16,32 @@ import com.example.fastfood.util.wrapWithFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class RecipeRepository(private val recipeDao: RecipeDao) {
+class RecipeRepository @Inject constructor(
+        private val recipeDao: RecipeDao,
+        private val api:RecipeApi,
+        private val recipeMapper:RecipeMapper,
+        private val toFavRecipeMapper:ToFavRecipeMapper,
+        private val fromFavRecipeMapper:FromFavRecipeMapper,
+        private val fromSimilarItemToMyMini:FromSimilarItemToMyMini
+    ) {
 
-    private val api = RetrofitInstance.api
-
-    fun getSimilarRecipes(id:Int):Flow<State<List<MyMiniRecipe?>?>> = flowWithMaping(FromSimilarItemToMyMini()){ api.getSimilarRecipes(id,10,"random") }
-    fun getRecipeInfo(id:Int) : Flow<State<MyRecipe?>> = flowWithMaping(RecipeMapper()){api.getRecipeInfo(id)}
+    fun getSimilarRecipes(id:Int):Flow<State<List<MyMiniRecipe?>?>> = flowWithMaping(fromSimilarItemToMyMini){ api.getSimilarRecipes(id,10,"random") }
+    fun getRecipeInfo(id:Int) : Flow<State<MyRecipe?>> = flowWithMaping(recipeMapper){api.getRecipeInfo(id)}
 
     //////////room/////////
     suspend fun insertFavRecipe(favRecipe: MyRecipe){
-        recipeDao.insertRecipe(ToFavRecipeMapper().map(favRecipe))
+        recipeDao.insertRecipe(toFavRecipeMapper.map(favRecipe))
     }
 
     suspend fun deleteFavRecipe(favRecipe: MyRecipe){
-        recipeDao.deleteRecipe(ToFavRecipeMapper().map(favRecipe))
+        recipeDao.deleteRecipe(toFavRecipeMapper.map(favRecipe))
     }
 
     suspend fun getRecipeById(id:Int):MyRecipe?{
         return withContext(Dispatchers.IO){
-            recipeDao.getRecipeById(id)?.let { FromFavRecipeMapper().map(it) }
+            recipeDao.getRecipeById(id)?.let { fromFavRecipeMapper.map(it) }
         }
     }
 

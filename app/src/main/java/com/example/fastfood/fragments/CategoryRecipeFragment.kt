@@ -12,16 +12,22 @@ import androidx.navigation.fragment.navArgs
 import com.example.fastfood.R
 import com.example.fastfood.adapters.CategoryRecipeAdapter
 import com.example.fastfood.databinding.FragmentCategoryRecipeBinding
+import com.example.fastfood.di.CategoryViewModelAssistedFactory
 import com.example.fastfood.domain.models.MyRecipe
-import com.example.fastfood.viewModel.factories.CategoryRecipeFactory
+import com.example.fastfood.viewModel.MainFactory
 import com.example.fastfood.viewModel.viewsm.CategoryRecipeViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class CategoryRecipeFragment : Fragment(), CategoryRecipeAdapter.ItemsInteraction {
 
     private lateinit var binding:FragmentCategoryRecipeBinding
     private val args:CategoryRecipeFragmentArgs by navArgs()
-    private val viewModel: CategoryRecipeViewModel by viewModels{ CategoryRecipeFactory(args.categoryType) }
+    @Inject lateinit var assistedFactory:CategoryViewModelAssistedFactory
+    private val viewModel: CategoryRecipeViewModel by viewModels {
+        MainFactory(assistedFactory,args.categoryType)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

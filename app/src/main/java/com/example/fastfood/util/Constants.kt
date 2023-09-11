@@ -16,6 +16,7 @@ import retrofit2.Response
 
 const val SPOON_API_KEY = "86a894c3695b486c9024f0fa969a802c"//"fd7648ceaced4e07870585f48bd9a439"
 const val DATABASE_NAME = "recipe_database"
+const val BASE_RECIPE_URL = "https://api.spoonacular.com/"
 
 val mealTypes = listOf(
     Pair("main course",R.drawable.main_course),

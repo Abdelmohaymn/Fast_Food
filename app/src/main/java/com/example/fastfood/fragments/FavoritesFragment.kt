@@ -15,14 +15,14 @@ import com.example.fastfood.adapters.FavoritesAdapter
 import com.example.fastfood.databinding.FragmentFavoritesBinding
 import com.example.fastfood.domain.models.MyRecipe
 import com.example.fastfood.viewModel.viewsm.FavoritesViewModel
-import com.example.fastfood.viewModel.factories.FavoritesViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class FavoritesFragment : Fragment(), FavoritesAdapter.ItemsInteraction {
 
     lateinit var binding:FragmentFavoritesBinding
-    private val viewModel: FavoritesViewModel by viewModels{ FavoritesViewModelFactory(requireContext()) }
+    private val viewModel: FavoritesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

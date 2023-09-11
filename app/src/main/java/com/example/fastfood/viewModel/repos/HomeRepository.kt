@@ -6,6 +6,7 @@ import com.example.fastfood.State
 import com.example.fastfood.domain.mapper.FromStoredRecipeMapper
 import com.example.fastfood.domain.mapper.ToStoredRecipeMapper
 import com.example.fastfood.domain.models.MyRecipe
+import com.example.fastfood.network.RecipeApi
 import com.example.fastfood.network.RetrofitInstance
 import com.example.fastfood.roomDb.RecipeDao
 import com.example.fastfood.roomDb.StoredRecipe
@@ -13,10 +14,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class HomeRepository(val recipeDao:RecipeDao) {
+class HomeRepository @Inject constructor(
+    private val recipeDao:RecipeDao,
+    private val api: RecipeApi,
+    private val fromStoredRecipeMapper:FromStoredRecipeMapper,
+    private val toStoredRecipeMapper:ToStoredRecipeMapper
+) {
 
-    private val api = RetrofitInstance.api
     /*un getRandomRecipe() : Flow<State<List<MyRecipe?>?>> = flowWithMaping(recipeMapper) {
         api.getRandomRecipe(1) }*/
     /*fun getPopularRecipes() : Flow<State<List<MyRecipe?>?>> = flowWithMaping(recipeMapper) {
@@ -29,7 +35,7 @@ class HomeRepository(val recipeDao:RecipeDao) {
                 recipeDao.getRandomRecipe()
             }
             if (res!=null){
-                emit(State.Success(FromStoredRecipeMapper().map(res)))
+                emit(State.Success(fromStoredRecipeMapper.map(res)))
             }else{
                 emit(State.Error(""))
             }
@@ -40,7 +46,7 @@ class HomeRepository(val recipeDao:RecipeDao) {
     suspend fun getPopularRecipes():List<MyRecipe>{
         return withContext(Dispatchers.IO) {
             recipeDao.getAllRecipes().map {
-                it.let { FromStoredRecipeMapper().map(it) }
+                it.let { fromStoredRecipeMapper.map(it) }
             }
         }
     }
@@ -49,7 +55,7 @@ class HomeRepository(val recipeDao:RecipeDao) {
         try{
             val response = api.getRandomRecipe(100,"popularity")
             val recipes = response.body()?.recipes?.map {
-                it?.let { it1 -> ToStoredRecipeMapper().map(it1) }
+                it?.let { it1 -> toStoredRecipeMapper.map(it1) }
             } as List<StoredRecipe>
             if(recipes!=null){
                 withContext(Dispatchers.IO){
@@ -66,7 +72,7 @@ class HomeRepository(val recipeDao:RecipeDao) {
         try{
             val response = api.getRandomRecipe(1)
             val recipes = response.body()?.recipes?.map {
-                it?.let { it1 -> ToStoredRecipeMapper().map(it1) }
+                it?.let { it1 -> toStoredRecipeMapper.map(it1) }
             } as List<StoredRecipe>
             if(recipes!=null){
                 withContext(Dispatchers.IO){

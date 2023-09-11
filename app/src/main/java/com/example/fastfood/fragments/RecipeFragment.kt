@@ -20,16 +20,15 @@ import com.example.fastfood.domain.models.MyRecipe
 import com.example.fastfood.model.recipesList.AnalyzedInstruction
 import com.example.fastfood.model.recipesList.Equipment
 import com.example.fastfood.model.recipesList.ExtendedIngredient
-import com.example.fastfood.model.similarRecipes.SimilarRecipesItem
 import com.example.fastfood.viewModel.viewsm.RecipeViewModel
-import com.example.fastfood.viewModel.factories.RecipeViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class RecipeFragment : Fragment(), SimilarRecipeAdapter.ItemsInteraction {
 
     private lateinit var binding: FragmentRecipeBinding
     private val args:RecipeFragmentArgs by navArgs()
-    private val viewModel: RecipeViewModel by viewModels{ RecipeViewModelFactory(requireContext()) }
+    private val viewModel: RecipeViewModel by viewModels()
     private var currentRecipe:MyRecipe? = null
     val isSaved = MutableLiveData(false)
     val isChecked = MutableLiveData(false)

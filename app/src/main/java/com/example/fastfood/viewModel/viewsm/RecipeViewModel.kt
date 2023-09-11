@@ -9,12 +9,16 @@ import com.example.fastfood.domain.models.MyMiniRecipe
 import com.example.fastfood.domain.models.MyRecipe
 import com.example.fastfood.roomDb.RecipeDatabase
 import com.example.fastfood.viewModel.repos.RecipeRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
-class RecipeViewModel(context: Context) : ViewModel() {
-    private var repository = RecipeRepository(RecipeDatabase.getDatabase(context).getRecipeDao())
+@HiltViewModel
+class RecipeViewModel @Inject constructor(
+    private val repository: RecipeRepository
+) : ViewModel() {
     val similarRecipes = MutableLiveData<State<List<MyMiniRecipe?>?>>()
     val recipeInfo = MutableLiveData<State<MyRecipe?>>()
 

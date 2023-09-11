@@ -22,6 +22,7 @@ import com.example.fastfood.databinding.FragmentSearchBinding
 import com.example.fastfood.domain.models.MyMiniRecipe
 import com.example.fastfood.model.autoComplete.AutoCompleteResponseItem
 import com.example.fastfood.viewModel.viewsm.SearchViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -29,7 +30,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
-
+@AndroidEntryPoint
 class SearchFragment : Fragment(), AutoCompleteAdapter.ItemsInteraction,
     SearchRecipesAdapter.ItemsInteraction {
 

@@ -15,14 +15,17 @@ import com.example.fastfood.databinding.FragmentHomeBinding
 import com.example.fastfood.domain.models.MyRecipe
 import com.example.fastfood.util.mealTypes
 import com.example.fastfood.viewModel.viewsm.HomeViewModel
-import com.example.fastfood.viewModel.factories.HomeViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class HomeFragment : Fragment(), PopularAdapter.ItemsInteraction, CategoryAdapter.ItemsInteraction {
 
     private lateinit var binding:FragmentHomeBinding
-    private val viewModel: HomeViewModel by viewModels{ HomeViewModelFactory(requireContext()) }
+    private val viewModel: HomeViewModel by viewModels()
     private var recipeBottomSheetFragment :RecipeBottomSheetFragment?=null
+
+    //@Inject lateinit var injectedElement:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +54,8 @@ class HomeFragment : Fragment(), PopularAdapter.ItemsInteraction, CategoryAdapte
             val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment()
             findNavController().navigate(action)
         }
+
+        //Toast.makeText(requireContext(),injectedElement,Toast.LENGTH_LONG).show()
 
         return binding.root
     }
