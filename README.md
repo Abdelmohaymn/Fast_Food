@@ -16,4 +16,4 @@ here are some screenshots of the app
 
 # App_architecture
 
-<img src="images/app_arch.png" width="500" height="500">
+<img src="images/app_arch.png" width="600" height="800">
